@@ -1,16 +1,17 @@
-
+import math
 from collections import namedtuple
 
 import numpy as np
 import scipy.stats
 
-from ml_lib.ml_util import argmax_random_tie, normalize, remove_all, best_index
+from ml_lib.ml_util import argmax_random_tie, normalize, remove_all, best_index, DataSet
 from ml_lib.decision_tree_support import DecisionLeaf, DecisionFork
+from ml_lib.utils import removeall
 
 
 class DecisionTreeLearner:
     """DecisionTreeLearner - Class to learn decision trees and predict classes
-    on novel exmaples
+    on novel examples
     """
 
     # Typedef for method chi2test result value (see chi2test for details)
@@ -39,7 +40,18 @@ class DecisionTreeLearner:
 
         self.debug = debug
 
-
+        # TODO these are notes I took from lecture - disregard
+        # # in class notes
+        # # p_value is pruning
+        # # sample code
+        # mushrooms = DataSet(name="mushrooms")
+        # mushrooms.examples[5]
+        # mushrooms.attrs
+        # mushroms.target
+        #
+        # mushrooms = DataSet(name="mushrooms", target=0)
+        # mushrooms.examples
+        # # use the information gain to figure out what question to ask
 
     def __str__(self):
         "str - Create a string representation of the tree"
@@ -64,7 +76,22 @@ class DecisionTreeLearner:
         # Hints:  See pseudocode from class and leverage classes
         # DecisionFork and DecisionLeaf
 
-        raise NotImplementedError
+        if len(examples) is 0:
+            return self.plurality_value(parent_examples)
+        elif self.all_same_class(parent_examples):
+            return examples[0]
+        elif len(attrs) is 0:
+            return self.plurality_value(examples)
+        else:
+            # Enter the recursive algorithm
+            a = self.choose_attribute(attrs, examples)
+            # create a new tree rooted on most important question
+            t = DecisionFork(a, None) # TODO second argument for distribution should not be None - not sure what to put here
+            # for each value v associated with attribute a:
+            for (value, example) in self.split_by(a, examples):
+                vexamples = self.decision_tree_learning(example, removeall(a, attrs), examples)
+                self.tree.add(value, vexamples)
+            return t
 
     def plurality_value(self, examples):
         """
@@ -86,7 +113,7 @@ class DecisionTreeLearner:
         (self.dataset.values[self.dataset.target])
         """
 
-        tidx = self.dataset.target # index of target attribute
+        tidx = self.dataset.target  # index of target attribute
         target_values = self.dataset.values[tidx]  # Class labels across dataset
 
         # Count the examples associated with each target
@@ -98,7 +125,6 @@ class DecisionTreeLearner:
 
         return counts
 
-
     def all_same_class(self, examples):
         """Are all these examples in the same target class?"""
         class0 = examples[0][self.dataset.target]
@@ -106,9 +132,8 @@ class DecisionTreeLearner:
 
     def choose_attribute(self, attrs, examples):
         """Choose the attribute with the highest information gain."""
+        return argmax_random_tie(attrs, lambda a: self.information_gain(a, examples))
 
-        # Returns the attribute index
-        raise NotImplementedError
 
     def information_gain(self, attr, examples):
         """Return the expected reduction in entropy for examples from splitting by attr."""
@@ -138,10 +163,13 @@ class DecisionTreeLearner:
         Returns tuple where info(i) is the information associated wth
         having class_counts(i) instances of class i.
         """
-
+        # TODO I am pretty sure this is wrong and I am basing the code below based on the example
+        # Need to think about what this function is used for
+        probability = normalize(removeall(0, class_counts))
+        entropy = sum((-p * math.log2(p)) for p in probability)
+        return entropy
         # Hint: remember discrete values use log2 when computing probability
 
-        raise NotImplementedError
 
     def information_per_class(self, examples):
         """information_per_class(examples)
@@ -165,7 +193,7 @@ class DecisionTreeLearner:
         and DecisionFork only contains DecisionLeaf children, after
         pruning, it is examined for pruning as well.
         """
-
+        # Post order traversal to get near leaf nodes
         # Hint - Easiest to do with a recursive auxiliary function, that takes
         # a parent argument, but you are free to implement as you see fit.
         # e.g. self.prune_aux(p_value, self.tree, None)
@@ -225,17 +253,12 @@ class DecisionTreeLearner:
         # Don't forget, scipy has an inverse cdf for chi^2
         # scipy.stats.chi2.ppf
 
+
         raise NotImplementedError
 
     def __str__(self):
         """str - String representation of the tree"""
         return str(self.tree)
-
-
-
-
-
-
 
 
 
