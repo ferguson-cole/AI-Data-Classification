@@ -6,7 +6,7 @@ import scipy.stats
 
 from ml_lib.ml_util import argmax_random_tie, normalize, remove_all, best_index, DataSet
 from ml_lib.decision_tree_support import DecisionLeaf, DecisionFork
-from ml_lib.utils import removeall
+from ml_lib.utils import removeall, count
 
 
 class DecisionTreeLearner:
@@ -86,7 +86,7 @@ class DecisionTreeLearner:
             # Enter the recursive algorithm
             a = self.choose_attribute(attrs, examples)
             # create a new tree rooted on most important question
-            t = DecisionFork(a, None) # TODO second argument for distribution should not be None - not sure what to put here
+            t = DecisionFork(a, self.split_by(attrs, examples)) # TODO second argument for distribution should not be None - not sure what to put here
             # for each value v associated with attribute a:
             for (value, example) in self.split_by(a, examples):
                 vexamples = self.decision_tree_learning(example, removeall(a, attrs), examples)
@@ -137,8 +137,18 @@ class DecisionTreeLearner:
 
     def information_gain(self, attr, examples):
         """Return the expected reduction in entropy for examples from splitting by attr."""
+        # TODO function written based on slide 28
+        distribution = self.split_by(attr, examples)
+        total_distribution = sum(distribution)
+        calculated_information_gain = 0
 
-        raise NotImplementedError
+        # Gain(A) = B(p/p+n) - Remainder(A)
+        for k_value in distribution:
+            B = self.information_content(k_value)
+            remainder = ((k_value[0] / total_distribution) * B)
+            calculated_information_gain += remainder
+        information_gain = self.information_content(distribution) - calculated_information_gain
+        return information_gain
 
     def split_by(self, attr, examples):
         """split_by(attr, examples)
@@ -166,7 +176,7 @@ class DecisionTreeLearner:
         # TODO I am pretty sure this is wrong and I am basing the code below based on the example
         # Need to think about what this function is used for
         probability = normalize(removeall(0, class_counts))
-        entropy = sum((-p * math.log2(p)) for p in probability)
+        entropy = sum(-(p * math.log2(p)) for p in probability)
         return entropy
         # Hint: remember discrete values use log2 when computing probability
 
@@ -177,6 +187,7 @@ class DecisionTreeLearner:
         to determine the information associated with each target class
         Returns information content per class.
         """
+        target = self.dataset.values[self.dataset.target]
         # Hint:  list of classes can be obtained from
         # self.data.set.values[self.dataset.target]
 
@@ -241,6 +252,8 @@ class DecisionTreeLearner:
            that there is a significant difference between the fork and its
            children
         """
+        delta = 0 # TODO figur out how to calculate delta (sum of the number of cases of the (P(k) - Pnot(k))^2 / Pnot(k) +(N(k) - Nnot(k))^2 / Nnot(k) - see slide 44
+        scipy.stats.chi2.ppf(delta, self.dof)
 
         if not isinstance(fork, DecisionFork):
             raise ValueError("fork is not a DecisionFork")
@@ -259,7 +272,4 @@ class DecisionTreeLearner:
     def __str__(self):
         """str - String representation of the tree"""
         return str(self.tree)
-
-
-
 
