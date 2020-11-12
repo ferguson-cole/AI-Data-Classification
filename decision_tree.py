@@ -79,17 +79,22 @@ class DecisionTreeLearner:
         if len(examples) is 0:
             return self.plurality_value(parent_examples)
         elif self.all_same_class(parent_examples):
-            return examples[0]
+            # all the examples are of the same class
+            # examples[0][self.dataset.target] represents a value of the classification goal
+            return DecisionLeaf(examples[0][self.dataset.target],
+                                self.count_targets(examples), parent=parent)
+        # we no longer have questions
         elif len(attrs) is 0:
             return self.plurality_value(examples)
         else:
             # Enter the recursive algorithm
             a = self.choose_attribute(attrs, examples)
             # create a new tree rooted on most important question
-            t = DecisionFork(a, self.split_by(attrs, examples)) # TODO second argument for distribution should not be None - not sure what to put here
+            t = DecisionFork(a, self.count_targets(examples), attr_name=self.dataset.attr_names[a])
             # for each value v associated with attribute a:
             for (value, example) in self.split_by(a, examples):
-                vexamples = self.decision_tree_learning(example, removeall(a, attrs), examples)
+                vexamples = self.decision_tree_learning(example, removeall(a, attrs), parent=t,
+                                                        parent_examples=examples)
                 self.tree.add(value, vexamples)
             return t
 
@@ -134,20 +139,17 @@ class DecisionTreeLearner:
         """Choose the attribute with the highest information gain."""
         return argmax_random_tie(attrs, lambda a: self.information_gain(a, examples))
 
-
     def information_gain(self, attr, examples):
         """Return the expected reduction in entropy for examples from splitting by attr."""
-        # TODO function written based on slide 28
-        distribution = self.split_by(attr, examples)
-        total_distribution = sum(distribution)
-        calculated_information_gain = 0
+        # Represent the denominator
+        total_examples = len(examples)
 
-        # Gain(A) = B(p/p+n) - Remainder(A)
-        for k_value in distribution:
-            B = self.information_content(k_value)
-            remainder = ((k_value[0] / total_distribution) * B)
-            calculated_information_gain += remainder
-        information_gain = self.information_content(distribution) - calculated_information_gain
+        # Compute the entropy
+        entropy = self.information_content(self.count_targets(examples))
+        # Compute the reminder where B is calculated from information content
+        remainder = sum(float((len(ex) / total_examples)) * self.information_content(self.count_targets(ex))
+                        for (v, ex) in self.split_by(attr, examples))
+        information_gain = entropy - remainder
         return information_gain
 
     def split_by(self, attr, examples):
@@ -166,20 +168,21 @@ class DecisionTreeLearner:
     @classmethod
     def information_content(cls, class_counts):
         """info = information_content(class_counts)
-        Given a list of counts associated with classes
-        compute the empirical information associated
-        with each class.
+        Given an iterable of counts associated with classes
+        compute the empirical entropy.
 
-        Returns tuple where info(i) is the information associated wth
-        having class_counts(i) instances of class i.
+        Example: 3 class problem where we have 3 examples of class 0,
+        2 examples of class 1, and 0 examples of class 2:
+        information_content((3, 2, 0)) returns ~ .971
+
+        Hint: Ignore zero counts; function normalize may be helpful
         """
-        # TODO I am pretty sure this is wrong and I am basing the code below based on the example
+
         # Need to think about what this function is used for
         probability = normalize(removeall(0, class_counts))
         entropy = sum(-(p * math.log2(p)) for p in probability)
         return entropy
         # Hint: remember discrete values use log2 when computing probability
-
 
     def information_per_class(self, examples):
         """information_per_class(examples)
@@ -187,11 +190,29 @@ class DecisionTreeLearner:
         to determine the information associated with each target class
         Returns information content per class.
         """
-        target = self.dataset.values[self.dataset.target]
+
         # Hint:  list of classes can be obtained from
         # self.data.set.values[self.dataset.target]
 
-        raise NotImplementedError
+        # NOTES FROM OFFICE HOUR
+        """
+        10 things
+        4 - one class / 6 - another class
+        how much information is there for each of the classes (I = 1 / log_2(P))
+        Use normalize func
+        compute information for each one of these classes - do in the order in which they were expected
+        dataset has attribute called values - tells you what the possible vares are (put in the same order)
+        """
+
+        # Compute the information for each one of these classes - do them in the order of which they are expected
+        # TODO unsure how to utilize 'target'
+        target = self.dataset.values[self.dataset.target]
+        # Use a list to represent the info. per class in the order that is expected for target
+        information_per_class = []
+        probabilities = normalize(self.count_targets(examples))
+        for p in probabilities:
+            # calculate the probability of information (formula on slide 17)
+            information_per_class.append(1 / np.log2(p))
 
     def prune(self, p_value):
         """Prune leaves of a tree when the hypothesis that the distribution
@@ -252,8 +273,6 @@ class DecisionTreeLearner:
            that there is a significant difference between the fork and its
            children
         """
-        delta = 0 # TODO figur out how to calculate delta (sum of the number of cases of the (P(k) - Pnot(k))^2 / Pnot(k) +(N(k) - Nnot(k))^2 / Nnot(k) - see slide 44
-        scipy.stats.chi2.ppf(delta, self.dof)
 
         if not isinstance(fork, DecisionFork):
             raise ValueError("fork is not a DecisionFork")
@@ -266,10 +285,19 @@ class DecisionTreeLearner:
         # Don't forget, scipy has an inverse cdf for chi^2
         # scipy.stats.chi2.ppf
 
+        # TODO figure out how to calculate delta (sum of the number of cases of the (P(k) - Pnot(k))^2 / Pnot(k) +(N(k) - Nnot(k))^2 / Nnot(k) - see slide 44
+        delta = 0
 
-        raise NotImplementedError
+        # ATTEMPT AT FORMULA
+        for k in range(len(fork.branches)):
+            for d in range(self.dof):
+                p_k_not = self.dof
+                p_k = 0
+                delta = ((p_k - p_k_not) ** 2) / p_k_not
+
+        chi_2 = scipy.stats.chi2.ppf(delta, self.dof)
+        return chi_2
 
     def __str__(self):
         """str - String representation of the tree"""
         return str(self.tree)
-
