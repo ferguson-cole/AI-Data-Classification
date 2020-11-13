@@ -40,7 +40,6 @@ class DecisionTreeLearner:
 
         self.debug = debug
 
-        # TODO these are notes I took from lecture - disregard
         # # in class notes
         # # p_value is pruning
         # # sample code
@@ -231,6 +230,9 @@ class DecisionTreeLearner:
         # Hint - Easiest to do with a recursive auxiliary function, that takes
         # a parent argument, but you are free to implement as you see fit.
         # e.g. self.prune_aux(p_value, self.tree, None)
+        # TODO write this function using post order traversal
+        # I think the way we do this is pass in the completed decision tree then go to the nodes and reference the
+        # chi2 values
         raise NotImplementedError
 
     def chi_annotate(self, p_value):
