@@ -76,7 +76,7 @@ class DecisionTreeLearner:
         # Hints:  See pseudocode from class and leverage classes
         # DecisionFork and DecisionLeaf
 
-        if len(examples) is 0:
+        if len(examples) == 0:
             return self.plurality_value(parent_examples)
         elif self.all_same_class(parent_examples):
             # all the examples are of the same class
@@ -84,7 +84,7 @@ class DecisionTreeLearner:
             return DecisionLeaf(examples[0][self.dataset.target],
                                 self.count_targets(examples), parent=parent)
         # we no longer have questions
-        elif len(attrs) is 0:
+        elif len(attrs) == 0:
             return self.plurality_value(examples)
         else:
             # Enter the recursive algorithm
@@ -295,8 +295,9 @@ class DecisionTreeLearner:
                 p_k = 0
                 delta = ((p_k - p_k_not) ** 2) / p_k_not
 
-        chi_2 = scipy.stats.chi2.ppf(delta, self.dof)
-        return chi_2
+        chi_2 = scipy.stats.chi2.cdf(delta, self.dof)
+        Chi2result = namedtuple("chi2result", ["value", "similar"])
+        return chi2result(chi_2, self.dof)
 
     def __str__(self):
         """str - String representation of the tree"""
