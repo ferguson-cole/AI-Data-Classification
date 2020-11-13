@@ -1,11 +1,10 @@
 """
-Machine 
+Machine learning
 decision trees
 """
 import time
-import numpy
-import scipy
 
+import scipy
 
 from ml_lib.ml_util import DataSet
 
@@ -14,7 +13,7 @@ from decision_tree import  DecisionTreeLearner
 from ml_lib.crossval import cross_validation
 
 from statistics import mean, stdev
-
+    
 
 
     
@@ -23,8 +22,21 @@ def main():
     Machine learning with decision trees.
     Runs cross validation on data sets and reports results/trees
     """
-    out = scipy.stats.chi2.cdf(2.3956,1)
-    print(out)
+    # construct_tree = DecisionTreeLearner
+
+    # zoo_without_pruning = cross_validation(learner=DecisionTreeLearner, dataset=DataSet(name="zoo"))
+    # print(zoo_without_pruning)
+    # test_dataset = DataSet(name="mushrooms")
+    # print(test_dataset.attr_names)
+
+
+    # p_value
+    dataset = DataSet(name="tiny_animal_set", target=2, exclude=[2])
+    tree = DecisionTreeLearner(dataset)
+    p_value = 0.05
+    tree.chi_annotate(p_value)
+    print(tree)
+
 
 if __name__ == '__main__':
     main()
