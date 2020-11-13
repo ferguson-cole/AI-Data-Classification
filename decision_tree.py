@@ -77,25 +77,28 @@ class DecisionTreeLearner:
         # DecisionFork and DecisionLeaf
 
         if len(examples) == 0:
-            return self.plurality_value(parent_examples)
-        elif self.all_same_class(parent_examples):
+            return DecisionLeaf(self.plurality_value(parent_examples), self.count_targets(parent_examples),
+                                parent=parent)
+        elif self.all_same_class(examples):
             # all the examples are of the same class
             # examples[0][self.dataset.target] represents a value of the classification goal
             return DecisionLeaf(examples[0][self.dataset.target],
                                 self.count_targets(examples), parent=parent)
         # we no longer have questions
         elif len(attrs) == 0:
-            return self.plurality_value(examples)
+            return DecisionLeaf(self.plurality_value(examples), self.count_targets(examples),
+                                parent=parent)
         else:
             # Enter the recursive algorithm
             a = self.choose_attribute(attrs, examples)
             # create a new tree rooted on most important question
-            t = DecisionFork(a, self.count_targets(examples), attr_name=self.dataset.attr_names[a])
+            t = DecisionFork(a, self.count_targets(examples), attr_name=self.dataset.attr_names[a],
+                             parent=parent)
             # for each value v associated with attribute a:
             for (value, example) in self.split_by(a, examples):
                 vexamples = self.decision_tree_learning(example, removeall(a, attrs), parent=t,
                                                         parent_examples=examples)
-                self.tree.add(value, vexamples)
+                t.add(value, vexamples)
             return t
 
     def plurality_value(self, examples):
@@ -170,11 +173,9 @@ class DecisionTreeLearner:
         """info = information_content(class_counts)
         Given an iterable of counts associated with classes
         compute the empirical entropy.
-
         Example: 3 class problem where we have 3 examples of class 0,
         2 examples of class 1, and 0 examples of class 2:
         information_content((3, 2, 0)) returns ~ .971
-
         Hint: Ignore zero counts; function normalize may be helpful
         """
 
@@ -214,11 +215,12 @@ class DecisionTreeLearner:
             # calculate the probability of information (formula on slide 17)
             information_per_class.append(1 / np.log2(p))
 
+        return information_per_class
+
     def prune(self, p_value):
         """Prune leaves of a tree when the hypothesis that the distribution
         in the leaves is not the same as in the parents as measured by
         a chi-squared test with a significance of the specified p-value.
-
         Pruning is only applied to the last DecisionFork in a tree.
         If that fork is merged (DecisionFork and child leaves (DecisionLeaf),
         the DecisionFork is replaced with a DecisionLeaf.  If a parent of
@@ -264,7 +266,6 @@ class DecisionTreeLearner:
         Given a DecisionFork and a p_value, determine if the children
         of the decision have significantly different distributions than
         the parent.
-
         Returns named tuple of type chi2result:
         chi2result.value - Chi^2 statistic
         chi2result.similar - True if the distribution in the children of the
@@ -285,19 +286,32 @@ class DecisionTreeLearner:
         # Don't forget, scipy has an inverse cdf for chi^2
         # scipy.stats.chi2.ppf
 
-        # TODO figure out how to calculate delta (sum of the number of cases of the (P(k) - Pnot(k))^2 / Pnot(k) +(N(k) - Nnot(k))^2 / Nnot(k) - see slide 44
+        # Setup delta
         delta = 0
 
-        # ATTEMPT AT FORMULA
-        for k in range(len(fork.branches)):
-            for d in range(self.dof):
-                p_k_not = self.dof
-                p_k = 0
-                delta = ((p_k - p_k_not) ** 2) / p_k_not
+        # Check to see if you are working with a parent
+        if fork.parent is None:
+            parent_distribution_split = self.count_targets(self.dataset.examples)
+        else:
+            parent_distribution_split = fork.parent.distribution
 
-        chi_2 = scipy.stats.chi2.cdf(delta, self.dof)
-        Chi2result = namedtuple("chi2result", ["value", "similar"])
-        return chi2result(chi_2, self.dof)
+        # Explore the children from the parent
+        for sub_child in fork.branches.values():
+            # Checks if the child is an instance of a DecisionFork or DecisionLeaf
+            if isinstance(sub_child, (DecisionFork, DecisionLeaf)):
+                child_distribution = sub_child.distribution
+
+                # Go through each class
+                for kth_instance in range(len(parent_distribution_split)):
+                    p_hat = parent_distribution_split[kth_instance] * (sum(child_distribution) / sum(parent_distribution_split))
+                    if p_hat != 0:
+                        delta += ((child_distribution[kth_instance] - p_hat) ** 2) / p_hat
+
+        # Compute the probability density function
+        delta_ppf = scipy.stats.chi2.ppf(1 - p_value, self.dof)
+
+        chi2result = namedtuple('chi2result', ['value', 'similar'])
+        return chi2result(delta,  (delta_ppf < p_value))
 
     def __str__(self):
         """str - String representation of the tree"""
