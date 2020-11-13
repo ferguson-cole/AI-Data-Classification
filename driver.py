@@ -33,9 +33,17 @@ def main():
     # p_value
     dataset = DataSet(name="tiny_animal_set", target=2, exclude=[2])
     tree = DecisionTreeLearner(dataset)
+
+    # TODO determine what to pass into this function then run it with 10 iterations for unpruned and 10 for pruned
+    # def cross_validation(learner, dataset, *learner_posn_args, k=10, trials=1, **learner_kw_args):
+    cross_validation()
+    # TODO figure out how to represent a pruned and un-pruned dataset
     p_value = 0.05
     tree.chi_annotate(p_value)
     print(tree)
+
+    # TODO get mean and std dev for each set of pruned and unpruned and write file writer
+
 
 
 if __name__ == '__main__':
