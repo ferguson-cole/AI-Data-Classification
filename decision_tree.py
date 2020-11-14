@@ -233,10 +233,22 @@ class DecisionTreeLearner:
         # TODO write this function using post order traversal
         # I think the way we do this is pass in the completed decision tree then go to the nodes and reference the
         # chi2 values
-        return 5
 
-    def __prune_aux():
-        return
+        # Call the recursive helper function
+        self.__prune_aux(self.tree, p_value)
+
+    def __prune_aux(self, branch, p_value):
+        if isinstance(branch, DecisionLeaf):
+            # Represents if we are already looking at a leaf node
+            return
+        else:
+            branch.chi2 = self.chi2test(p_value, branch)
+            if branch.chi2 <= p_value:
+
+            # Check its children
+            for child in branch.branches.values():
+                self.__chi_annotate_aux(child, p_value)
+
 
     def chi_annotate(self, p_value):
         """chi_annotate(p_value)
