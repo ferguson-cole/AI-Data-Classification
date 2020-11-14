@@ -46,7 +46,7 @@ def main():
     write_to_file(tree)
 
 
-def write_to_file(tree):
+def write_to_file(tree, p_value):
     f = open("output.txt", "w") # Create file if does not exist, will overwrite content
     # Create tree here, write to file
     tree.prune()
