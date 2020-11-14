@@ -86,7 +86,7 @@ def format_output(content):
     except Exception as e:
         print("Could not parse format_output() input as string.")
         return
-    output = "Mean: " + mn + ", Standard Deviation: " + sd + ", Tree: \n" + tree
+    output = "Mean: " + mn + ", Standard Deviation: " + sd + ", Tree: \n\n" + tree
     # write_to_file(output)
     print(output)
 
