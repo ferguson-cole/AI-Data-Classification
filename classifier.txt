@@ -1,0 +1,24 @@
+species Chi2=11.000 split (6,5)
+cardinal -> bird is predicted
+wolf -> mammal is predicted
+pigeon -> bird is predicted
+flying squirrel -> mammal is predicted
+rhinoceros -> mammal is predicted
+ostritch -> bird is predicted
+bat -> mammal is predicted
+falcon -> bird is predicted
+polar bear -> mammal is predicted
+lion -> mammal is predicted
+dove -> bird is predicted
+species Chi2=11.000 split (6,5)
+cardinal -> bird is predicted
+wolf -> mammal is predicted
+pigeon -> bird is predicted
+flying squirrel -> mammal is predicted
+rhinoceros -> mammal is predicted
+ostritch -> bird is predicted
+bat -> mammal is predicted
+falcon -> bird is predicted
+polar bear -> mammal is predicted
+lion -> mammal is predicted
+dove -> bird is predicted
