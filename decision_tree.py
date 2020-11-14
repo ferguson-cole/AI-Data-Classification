@@ -233,7 +233,10 @@ class DecisionTreeLearner:
         # TODO write this function using post order traversal
         # I think the way we do this is pass in the completed decision tree then go to the nodes and reference the
         # chi2 values
-        raise NotImplementedError
+        return 5
+
+    def __prune_aux():
+        return
 
     def chi_annotate(self, p_value):
         """chi_annotate(p_value)
