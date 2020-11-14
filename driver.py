@@ -15,6 +15,7 @@ from ml_lib.crossval import cross_validation
 from statistics import mean, stdev
     
 
+default_filename = "classifier.txt"
 
     
 def main():
@@ -47,7 +48,7 @@ def main():
     write_to_file(tree) # Pruned tree
 
 
-def write_to_file(content, filename="output.txt"):
+def write_to_file(content, filename=default_filename):
     f = open(filename, "a") # Create file if does not exist, will overwrite content
     # Write tree to file
     try:
@@ -58,7 +59,7 @@ def write_to_file(content, filename="output.txt"):
     f.close()
 
 
-def init_file(filename="output.txt"):
+def init_file(filename=default_filename):
     f = open(filename, "w") # If does not exist, create new; if exists, overwrite
     f.close()
 
