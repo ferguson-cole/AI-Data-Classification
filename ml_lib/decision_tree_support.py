@@ -80,16 +80,23 @@ class DecisionFork:
     def __str__(self):
         "String representation of this fork of the decision tree"
 
+        # indent string appropriately for node depth
         tab = " " * self.indent * self.depth
         # Add chi-squared value if it has been computed
         chi2 = f' Chi2={self.chi2.value:.3f}' if hasattr(self, 'chi2') else ""
+        # Number of items from each target class that were presented to branch
+        # in training
         dist_str = ",".join([str(d) for d in self.distribution])
-        result = [f"{self.attr_name}{chi2} split ({dist_str})"]
+        # Show the branch values that were presented (not really needed, but
+        # makes it easier to see
+        branch_vals = ", ".join(self.branches.keys())
+
+        # String consists of split message
+        result = [f"{self.attr_name}{chi2} split ({dist_str}) on values {branch_vals}"]
+        # followed by each of the branches
         for (val, subtree) in self.branches.items():
             string = str(subtree)
-            #tab2 = tab + " " * (self.indent // 2)
             result.append(f"{tab}{val} -> " + str(subtree))
-            #result.append(str(subtree))
 
         return "\n".join(result)
 
