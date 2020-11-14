@@ -43,7 +43,16 @@ def main():
     print(tree)
 
     # TODO get mean and std dev for each set of pruned and unpruned and write file writer
+    write_to_file(tree)
 
+
+def write_to_file(tree):
+    f = open("output.txt", "w") # Create file if does not exist, will overwrite content
+    # Create tree here, write to file
+    tree.prune()
+    # Write tree to file
+    f.write(etc)
+    f.close()
 
 
 if __name__ == '__main__':
