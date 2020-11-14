@@ -31,7 +31,7 @@ def main():
     # print(test_dataset.attr_names)
 
     # p_value
-    dataset = DataSet(name="tiny_animal_set", target=2, exclude=[2])
+    dataset = DataSet(name="tiny_animal_set", target=2, attr_names=True)
     tree = DecisionTreeLearner(dataset)
 
     # TODO determine what to pass into this function then run it with 10 iterations for unpruned and 10 for pruned
@@ -40,6 +40,22 @@ def main():
     # TODO figure out how to represent a pruned and un-pruned dataset
     p_value = 0.05
     tree.chi_annotate(p_value)
+    var = cross_validation(DecisionTreeLearner, dataset)
+    errors = var[0]
+    # UNPRUNED
+    unpruned_err_mean = mean(errors)
+    unpruned_err_std_dev = stdev(errors)
+
+    var = cross_validation(DecisionTreeLearner, dataset)
+    errors = var[0]
+    # PRUNED
+    pruned_err_mean = mean(errors)
+    pruned_err_std_dev = stdev(errors)
+
+    # print(str(unpruned_err_mean) + "\n" + \
+    #     str(unpruned_err_std_dev) + "\n" + \
+    #     str(pruned_err_mean) + "\n" + \
+    #     str(pruned_err_std_dev) + "\n")
 
     # TODO get mean and std dev for each set of pruned and unpruned and write file writer
     init_file()

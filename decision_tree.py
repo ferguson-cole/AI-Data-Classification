@@ -235,19 +235,20 @@ class DecisionTreeLearner:
         # chi2 values
 
         # Call the recursive helper function
+        return 0
         self.__prune_aux(self.tree, p_value)
 
-    def __prune_aux(self, branch, p_value):
-        if isinstance(branch, DecisionLeaf):
-            # Represents if we are already looking at a leaf node
-            return
-        else:
-            branch.chi2 = self.chi2test(p_value, branch)
-            if branch.chi2 <= p_value:
+    # def __prune_aux(self, branch, p_value):
+    #     if isinstance(branch, DecisionLeaf):
+    #         # Represents if we are already looking at a leaf node
+    #         return
+    #     else:
+    #         branch.chi2 = self.chi2test(p_value, branch)
+    #         if branch.chi2 <= p_value:
 
-            # Check its children
-            for child in branch.branches.values():
-                self.__chi_annotate_aux(child, p_value)
+    #         # Check its children
+    #         for child in branch.branches.values():
+    #             self.__chi_annotate_aux(child, p_value)
 
 
     def chi_annotate(self, p_value):
