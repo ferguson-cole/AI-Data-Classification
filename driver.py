@@ -27,7 +27,7 @@ def main():
     p_value = 0.05
 
     # data_set_names = ("mushrooms", "zoo")
-    data_set_names = "tiny_animal_set"
+    data_set_names = "tiny_animal_set", 0
     for set_name in data_set_names:
         
         dataset = DataSet(name=set_name, target=2, attr_names=True)
@@ -41,11 +41,9 @@ def main():
         unpruned_err_mean = mean(errors)
         unpruned_err_std_dev = stdev(errors)
         unpruned_tree = var[1][0]
-        unpruned_output = "Mean: "
-        print(unpruned_err_mean)
+
+        format_output( (unpruned_err_mean, unpruned_err_std_dev, unpruned_tree) )
         return
-        write_to_file(unpruned_err_mean)
-        write_to_file(tree) # Write unpruned tree
 
         # PRUNED
         tree.prune(p_value)
@@ -72,6 +70,25 @@ def write_to_file(content, filename=default_filename):
 def init_file(filename=default_filename):
     f = open(filename, "w") # If does not exist, create new; if exists, overwrite
     f.close()
+
+
+def format_output(content):
+    """
+    Accepts a tuple with format (mean, std dev, tree)
+    """
+    if len(content) != 3 or not isinstance(content, tuple):
+        print("Incorrect format provided to format_output function.")
+        return
+    try:
+        mn = str(content[0])
+        sd = str(content[1])
+        tree = str(content[2])
+    except Exception as e:
+        print("Could not parse format_output() input as string.")
+        return
+    output = "Mean: " + mn + ", Standard Deviation: " + sd + ", Tree: \n" + tree
+    # write_to_file(output)
+    print(output)
 
 
 if __name__ == '__main__':
