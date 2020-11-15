@@ -1,4 +1,5 @@
 import math
+import sys
 from collections import namedtuple
 
 import numpy as np
@@ -7,8 +8,6 @@ import scipy.stats
 from ml_lib.ml_util import argmax_random_tie, normalize, remove_all, best_index, DataSet
 from ml_lib.decision_tree_support import DecisionLeaf, DecisionFork
 from ml_lib.utils import removeall, count
-
-import sys
 
 
 class DecisionTreeLearner:
@@ -93,7 +92,7 @@ class DecisionTreeLearner:
             # Enter the recursive algorithm
             a = self.choose_attribute(attrs, examples)
             # create a new tree rooted on most important question
-            t = DecisionFork(a, self.count_targets(examples), attr_name=self.dataset.attr_names[a],
+            t = DecisionFork(a, self.count_targets(examples), self.dataset.attr_names[a],
                              parent=parent)
             # for each value v associated with attribute a:
             for (value, example) in self.split_by(a, examples):
@@ -151,8 +150,11 @@ class DecisionTreeLearner:
         # Compute the entropy
         entropy = self.information_content(self.count_targets(examples))
         # Compute the reminder where B is calculated from information content
-        remainder = sum(float((len(ex) / total_examples)) * self.information_content(self.count_targets(ex))
+        remainder = sum(np.multiply(float((np.divide(len(ex), total_examples))),
+                                    self.information_content(self.count_targets(ex)))
+                        # Returns the pairs
                         for (v, ex) in self.split_by(attr, examples))
+        # Calculation from slides
         information_gain = entropy - remainder
         return information_gain
 
@@ -180,9 +182,9 @@ class DecisionTreeLearner:
         Hint: Ignore zero counts; function normalize may be helpful
         """
 
-        # Need to think about what this function is used for
+        # Use the normalize method to get the results within a range of 1
         probability = normalize(removeall(0, class_counts))
-        entropy = sum(-(p * math.log2(p)) for p in probability)
+        entropy = sum(-(p * np.log2(p)) for p in probability)
         return entropy
         # Hint: remember discrete values use log2 when computing probability
 
@@ -207,8 +209,6 @@ class DecisionTreeLearner:
         """
 
         # Compute the information for each one of these classes - do them in the order of which they are expected
-        # TODO unsure how to utilize 'target'
-        target = self.dataset.values[self.dataset.target]
         # Use a list to represent the info. per class in the order that is expected for target
         information_per_class = []
         probabilities = normalize(self.count_targets(examples))
@@ -232,7 +232,6 @@ class DecisionTreeLearner:
         # Hint - Easiest to do with a recursive auxiliary function, that takes
         # a parent argument, but you are free to implement as you see fit.
         # e.g. self.prune_aux(p_value, self.tree, None)
-        # TODO write this function using post order traversal
         # I think the way we do this is pass in the completed decision tree then go to the nodes and reference the
         # chi2 values
 
@@ -240,35 +239,33 @@ class DecisionTreeLearner:
         self.__prune_aux(self.tree, p_value)
 
     def __prune_aux(self, branch, p_value):
-        if isinstance(branch, DecisionLeaf):
-            # Represents if we are already looking at a leaf node
-            return
-        
-        all_children_are_leaves = True
-        for child in branch.branches.values():
-            if child is DecisionFork:
-                all_children_are_leaves = False
-                self.__prune_aux(child, p_value)
+        if isinstance(branch, DecisionFork):
+            # Check the children of the fork
+            for children in branch.branches.values():
+                # Check if the children are also decision forks
+                if isinstance(children, DecisionFork):
+                    # recursively go through the tree
+                    children_branch = self.__prune_aux(children, p_value)
+                    # Compute the chi2 stat
+                    branch_test = self.chi2test(p_value, children_branch)
+                    # Use the boolean value we are unsure about - from email, "examine the class distribution"
+                    if branch_test.similar:
+                        # If true, then replace the Decision Fork with a newly created Decision Leaf
 
-        if all_children_are_leaves is True:
-            # compare chi2 to branch's chi2
-            branch_test = self.chi2test(p_value, branch)
-            needs_pruning = branch_test[1]
+                        # Start by creating a list that compares the whole tree from the values of the dict
+                        post_order_value_list = [branch.branches.values()]
+                        # Grab the index value of each child node
+                        values = post_order_value_list.index(children_branch)
 
-            # Replace the current branch with the first child
-            if needs_pruning:
-                branch = branch.branches.values()[0]
+                        # Create another list to represent the keys of the dict
+                        key_list = [branch.branches.keys()]
+                        new_keys = key_list[values]
 
-            # Replace the current branch with replacement target (defaults to current branch node)
-            # branch = targetchild
-            # if child_chi2_val < branchtest:
-            #     # If child chi^2 val < the lowest value of previously searched children
-            #     if child_chi2_val < minval:
-            #         # Set the minimum val to the current child's chi^2 value
-            #         minval = child_chi2_val
-            #         # Set the child to replace parent to the current child
-            #         targetchild = child
-
+                        # "The node is then replaced with a new leaf node of that value."
+                        # Result - Distribution - Parent
+                        branch.branches[new_keys] = DecisionLeaf(self.dataset.values[self.dataset.target][best_index(
+                            branch.distribution)], branch.distribution, branch.parent)
+        return branch
 
     def chi_annotate(self, p_value):
         """chi_annotate(p_value)
@@ -349,7 +346,7 @@ class DecisionTreeLearner:
         delta_ppf = scipy.stats.chi2.ppf(1 - p_value, self.dof)
 
         chi2result = namedtuple('chi2result', ['value', 'similar'])
-        return chi2result(delta,  (delta_ppf < p_value))
+        return chi2result(delta, (delta_ppf < p_value))
 
     def __str__(self):
         """str - String representation of the tree"""
