@@ -26,14 +26,11 @@ def main():
     init_file()
     p_value = 0.05
 
-    # data_set_names = ("mushrooms", "zoo")
-    data_set_names = "tiny_animal_set", 0
-    for set_name in data_set_names:
-        
-        dataset = DataSet(name=set_name, target=2, attr_names=True)
-        tree = DecisionTreeLearner(dataset)
-
-        tree.chi_annotate(p_value)
+    set_names = ("mushrooms", "zoo")
+    set_targets = (0, 17)
+    for i in range(2):
+        # Construct a new DataSet and corresponding DecisionTreeLearner
+        dataset = DataSet(name=set_names[i], target=set_targets[i], attr_names=True)
 
         # UNPRUNED
         var = cross_validation(DecisionTreeLearner, dataset)
@@ -41,19 +38,22 @@ def main():
         unpruned_err_mean = mean(errors)
         unpruned_err_std_dev = stdev(errors)
         unpruned_tree = var[1][0]
+        unpruned_tree.chi_annotate(p_value)
 
+        # Output unpruned tree
         format_output( (unpruned_err_mean, unpruned_err_std_dev, unpruned_tree) )
-        return
 
         # PRUNED
-        tree.prune(p_value)
         var = cross_validation(DecisionTreeLearner, dataset)
         errors = var[0]
         pruned_err_mean = mean(errors)
         pruned_err_std_dev = stdev(errors)
         pruned_tree = var[1][0]
+        pruned_tree.prune(p_value)
+        pruned_tree.chi_annotate(p_value)
 
-        write_to_file(tree) # Pruned tree
+        # Output pruned tree
+        format_output( (pruned_err_mean, pruned_err_std_dev, pruned_tree) )
 
 
 def write_to_file(content, filename=default_filename):
@@ -86,7 +86,7 @@ def format_output(content):
     except Exception as e:
         print("Could not parse format_output() input as string.")
         return
-    output = "Mean: " + mn + ", Standard Deviation: " + sd + ", Tree: \n\n" + tree
+    output = "Mean: " + mn + ", Standard Deviation: " + sd + ", Tree: \n\n" + tree + "\n"
     # write_to_file(output)
     print(output)
 

@@ -253,7 +253,7 @@ class DecisionTreeLearner:
 
         if all_children_are_leaves is True:
             # compare chi2 to branch's chi2
-            branchtest = branch.chi2test(p_value, branch)
+            branchtest = chi2test(p_value, branch)
             # Default min value is maximum int
             minval = sys.maxsize
             # Default replacement is the current node (i.e. parent of children we're searching)
@@ -261,7 +261,7 @@ class DecisionTreeLearner:
             # Loop through children and see if we need to prune
             for child in branch.branches.values():
                 # find the current child's chi^2 value
-                child_chi2_val = child.chi2test(p_value, child)
+                child_chi2_val = chi2test(p_value, child)
                 # If the current child's chi^2 value is less than it's parent's, we need to prune...
                 if child_chi2_val < branchtest:
                     # If child chi^2 val < the lowest value of previously searched children
