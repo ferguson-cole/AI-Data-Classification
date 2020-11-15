@@ -8,7 +8,7 @@ from ml_lib.ml_util import argmax_random_tie, normalize, remove_all, best_index,
 from ml_lib.decision_tree_support import DecisionLeaf, DecisionFork
 from ml_lib.utils import removeall, count
 
-from sys import maxsize
+import sys
 
 
 class DecisionTreeLearner:
@@ -237,7 +237,6 @@ class DecisionTreeLearner:
         # chi2 values
 
         # Call the recursive helper function
-        return 0
         self.__prune_aux(self.tree, p_value)
 
     def __prune_aux(self, branch, p_value):
@@ -249,30 +248,26 @@ class DecisionTreeLearner:
         for child in branch.branches.values():
             if child is DecisionFork:
                 all_children_are_leaves = False
-                __prune_aux(child, p_value)
+                self.__prune_aux(child, p_value)
 
         if all_children_are_leaves is True:
             # compare chi2 to branch's chi2
-            branchtest = chi2test(p_value, branch)
-            # Default min value is maximum int
-            minval = sys.maxsize
-            # Default replacement is the current node (i.e. parent of children we're searching)
-            targetchild = branch
-            # Loop through children and see if we need to prune
-            for child in branch.branches.values():
-                # find the current child's chi^2 value
-                child_chi2_val = chi2test(p_value, child)
-                # If the current child's chi^2 value is less than it's parent's, we need to prune...
-                if child_chi2_val < branchtest:
-                    # If child chi^2 val < the lowest value of previously searched children
-                    if child_chi2_val < minval:
-                        # Set the minimum val to the current child's chi^2 value
-                        minval = child_chi2_val
-                        # Set the child to replace parent to the current child
-                        targetchild = child
+            branch_test = self.chi2test(p_value, branch)
+            needs_pruning = branch_test[1]
+
+            # Replace the current branch with the first child
+            if needs_pruning:
+                branch = branch.branches.values()[0]
 
             # Replace the current branch with replacement target (defaults to current branch node)
-            branch = targetchild
+            # branch = targetchild
+            # if child_chi2_val < branchtest:
+            #     # If child chi^2 val < the lowest value of previously searched children
+            #     if child_chi2_val < minval:
+            #         # Set the minimum val to the current child's chi^2 value
+            #         minval = child_chi2_val
+            #         # Set the child to replace parent to the current child
+            #         targetchild = child
 
 
     def chi_annotate(self, p_value):
@@ -345,9 +340,10 @@ class DecisionTreeLearner:
 
                 # Go through each class
                 for kth_instance in range(len(parent_distribution_split)):
-                    p_hat = parent_distribution_split[kth_instance] * (sum(child_distribution) / sum(parent_distribution_split))
+                    p_hat = np.multiply(parent_distribution_split[kth_instance], (np.sum(child_distribution))
+                                        / np.sum(parent_distribution_split))
                     if p_hat != 0:
-                        delta += ((child_distribution[kth_instance] - p_hat) ** 2) / p_hat
+                        delta += (np.square(child_distribution[kth_instance] - p_hat)) / p_hat
 
         # Compute the probability density function
         delta_ppf = scipy.stats.chi2.ppf(1 - p_value, self.dof)
