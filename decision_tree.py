@@ -8,6 +8,8 @@ from ml_lib.ml_util import argmax_random_tie, normalize, remove_all, best_index,
 from ml_lib.decision_tree_support import DecisionLeaf, DecisionFork
 from ml_lib.utils import removeall, count
 
+from sys import maxsize
+
 
 class DecisionTreeLearner:
     """DecisionTreeLearner - Class to learn decision trees and predict classes
@@ -238,17 +240,39 @@ class DecisionTreeLearner:
         return 0
         self.__prune_aux(self.tree, p_value)
 
-    # def __prune_aux(self, branch, p_value):
-    #     if isinstance(branch, DecisionLeaf):
-    #         # Represents if we are already looking at a leaf node
-    #         return
-    #     else:
-    #         branch.chi2 = self.chi2test(p_value, branch)
-    #         if branch.chi2 <= p_value:
+    def __prune_aux(self, branch, p_value):
+        if isinstance(branch, DecisionLeaf):
+            # Represents if we are already looking at a leaf node
+            return
+        
+        all_children_are_leaves = True
+        for child in branch.branches.values():
+            if child is DecisionFork:
+                all_children_are_leaves = False
+                __prune_aux(child, p_value)
 
-    #         # Check its children
-    #         for child in branch.branches.values():
-    #             self.__chi_annotate_aux(child, p_value)
+        if all_children_are_leaves is True:
+            # compare chi2 to branch's chi2
+            branchtest = branch.chi2test(p_value, branch)
+            # Default min value is maximum int
+            minval = sys.maxsize
+            # Default replacement is the current node (i.e. parent of children we're searching)
+            targetchild = branch
+            # Loop through children and see if we need to prune
+            for child in branch.branches.values():
+                # find the current child's chi^2 value
+                child_chi2_val = child.chi2test(p_value, child)
+                # If the current child's chi^2 value is less than it's parent's, we need to prune...
+                if child_chi2_val < branchtest:
+                    # If child chi^2 val < the lowest value of previously searched children
+                    if child_chi2_val < minval:
+                        # Set the minimum val to the current child's chi^2 value
+                        minval = child_chi2_val
+                        # Set the child to replace parent to the current child
+                        targetchild = child
+
+            # Replace the current branch with replacement target (defaults to current branch node)
+            branch = targetchild
 
 
     def chi_annotate(self, p_value):
