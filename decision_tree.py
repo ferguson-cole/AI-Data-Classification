@@ -325,6 +325,7 @@ class DecisionTreeLearner:
 
         # Setup delta
         delta = 0
+        num_deltas = 0
         children = fork.branches.values()
 
         # Handle parent calculations
@@ -355,13 +356,17 @@ class DecisionTreeLearner:
                     n_k += c_dist[ii]
 
                 p_k_hat = p * (p_k + n_k) / (p + n)
-                delta += (p_k - p_k_hat)**2 / p_k_hat
+
+                if p_k_hat != 0:
+                    num_deltas += 1
+                    delta += (p_k - p_k_hat)**2 / p_k_hat
 
         # Compute the probability density function
         ppf = chi2.ppf(1 - p_value, self.dof)
 
         # Handle output
         chi2result = namedtuple('chi2result', ['value', 'similar'])
+        delta /= num_deltas
         return chi2result(delta, (delta < ppf))
 
     def __str__(self):
