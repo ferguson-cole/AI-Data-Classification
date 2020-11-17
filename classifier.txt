@@ -1,295 +1,292 @@
 Mean: 0.0, Standard Deviation: 0.0, Tree: 
 
-odor Chi2=6891.596 split (3787,3525) on values y, m, p, n, c, a, f, l, s
-y -> p is predicted
-m -> p is predicted
-p -> p is predicted
-n -> spore-print-color Chi2=5357.321 split (3062,109) on values y, w, b, k, n, r, o, h, u
-    y -> e is predicted
-    w -> habitat Chi2=781.291 split (520,42) on values d, m, w, p, l, g, u
-        d -> population Chi2=1449.925 split (6,28) on values y, v, n, c, a, s
-            y -> e is predicted
-            v -> p is predicted
-            n -> p is predicted
+odor Chi2=6903.421 split (3766,3546) on values n, a, s, p, c, l, m, f, y
+n -> spore-print-color Chi2=5403.096 split (3049,107) on values o, n, k, u, b, w, y, h, r
+    o -> e is predicted
+    n -> e is predicted
+    k -> e is predicted
+    u -> e is predicted
+    b -> e is predicted
+    w -> habitat Chi2=767.492 split (517,41) on values d, p, l, u, m, w, g
+        d -> stalk-root Chi2=1167.737 split (7,28) on values c, b, ?, e, r
             c -> p is predicted
-            a -> p is predicted
-            s -> p is predicted
+            b -> e is predicted
+            ? -> p is predicted
+            e -> p is predicted
+            r -> p is predicted
+        p -> e is predicted
+        l -> stalk-color-below-ring Chi2=300.329 split (41,13) on values o, e, n, p, c, b, w, y, g
+            o -> e is predicted
+            e -> e is predicted
+            n -> e is predicted
+            p -> e is predicted
+            c -> e is predicted
+            b -> e is predicted
+            w -> p is predicted
+            y -> p is predicted
+            g -> e is predicted
+        u -> e is predicted
         m -> e is predicted
         w -> e is predicted
-        p -> e is predicted
-        l -> stalk-color-below-ring Chi2=308.006 split (46,14) on values y, e, w, b, p, n, c, g, o
-            y -> p is predicted
-            e -> e is predicted
-            w -> p is predicted
-            b -> e is predicted
-            p -> e is predicted
-            n -> e is predicted
-            c -> e is predicted
-            g -> e is predicted
-            o -> e is predicted
         g -> e is predicted
-        u -> e is predicted
-    b -> e is predicted
-    k -> e is predicted
-    n -> e is predicted
-    r -> p is predicted
-    o -> e is predicted
+    y -> e is predicted
     h -> e is predicted
-    u -> e is predicted
-c -> p is predicted
+    r -> p is predicted
 a -> e is predicted
-f -> p is predicted
-l -> e is predicted
 s -> p is predicted
+p -> p is predicted
+c -> p is predicted
+l -> e is predicted
+m -> p is predicted
+f -> p is predicted
+y -> p is predicted
 
 Mean: 0.0, Standard Deviation: 0.0, Tree: 
 
-odor Chi2=6896.777 split (3785,3527) on values y, m, p, n, c, a, f, l, s
-y -> p is predicted
-m -> p is predicted
-p -> p is predicted
-n -> spore-print-color Chi2=5391.848 split (3072,107) on values y, w, b, k, n, r, o, h, u
-    y -> e is predicted
-    w -> habitat Chi2=721.003 split (527,40) on values d, m, w, p, l, g, u
-        d -> stalk-surface-above-ring Chi2=880.757 split (8,27) on values y, s, k, f
-            y -> e is predicted
-            s -> p is predicted
-            k -> p is predicted
-            f -> p is predicted
+odor Chi2=6909.157 split (3782,3530) on values n, a, s, p, c, l, m, f, y
+n -> spore-print-color Chi2=5396.913 split (3069,104) on values o, n, k, u, b, w, y, h, r
+    o -> e is predicted
+    n -> e is predicted
+    k -> e is predicted
+    u -> e is predicted
+    b -> e is predicted
+    w -> habitat Chi2=773.154 split (516,41) on values d, p, l, u, m, w, g
+        d -> ring-number Chi2=614.804 split (8,28) on values o, t, n
+            o -> p is predicted
+            t -> e is predicted
+            n -> p is predicted
+        p -> e is predicted
+        l -> stalk-color-below-ring Chi2=286.764 split (44,13) on values o, e, n, p, c, b, w, y, g
+            o -> e is predicted
+            e -> e is predicted
+            n -> e is predicted
+            p -> e is predicted
+            c -> e is predicted
+            b -> e is predicted
+            w -> p is predicted
+            y -> p is predicted
+            g -> e is predicted
+        u -> e is predicted
         m -> e is predicted
         w -> e is predicted
-        p -> e is predicted
-        l -> cap-color Chi2=317.516 split (41,13) on values y, e, w, b, p, n, c, g, r, u
-            y -> p is predicted
-            e -> e is predicted
-            w -> p is predicted
-            b -> e is predicted
-            p -> e is predicted
-            n -> e is predicted
-            c -> e is predicted
-            g -> e is predicted
-            r -> e is predicted
-            u -> e is predicted
         g -> e is predicted
-        u -> e is predicted
-    b -> e is predicted
-    k -> e is predicted
-    n -> e is predicted
-    r -> p is predicted
-    o -> e is predicted
+    y -> e is predicted
     h -> e is predicted
-    u -> e is predicted
-c -> p is predicted
+    r -> p is predicted
 a -> e is predicted
-f -> p is predicted
-l -> e is predicted
 s -> p is predicted
+p -> p is predicted
+c -> p is predicted
+l -> e is predicted
+m -> p is predicted
+f -> p is predicted
+y -> p is predicted
 
-Mean: 0.58, Standard Deviation: 0.19321835661585918, Tree: 
+Mean: 0.57, Standard Deviation: 0.13374935098492582, Tree: 
 
-animal_name Chi2=576.311 split (36,17,8,5,12,4,9) on values haddock, stingray, lion, newt, vampire, seasnake, porpoise, elephant, flamingo, gorilla, mongoose, kiwi, sole, pony, squirrel, carp, pike, scorpion, aardvark, tuatara, piranha, penguin, sparrow, tortoise, platypus, cavy, leopard, octopus, slug, deer, duck, hamster, gull, seal, lobster, dogfish, toad, wolf, antelope, seawasp, skimmer, pheasant, chub, swan, seahorse, goat, rhea, pussycat, pitviper, boar, tuna, vole, crow, starfish, moth, slowworm, clam, girl, reindeer, bass, termite, crab, dove, cheetah, frog, buffalo, calf, giraffe, wallaby, skua, fruitbat, mink, bear, wasp, dolphin, mole, puma, hawk, sealion, herring, catfish, ladybird, parakeet, ostrich, housefly, polecat, lark, hare, vulture, opossum, oryx, chicken, lynx, crayfish, raccoon, flea, wren, gnat, honeybee, worm
-haddock -> fish is predicted
+animal_name Chi2=544.165 split (10,7,15,12,39,5,3) on values stingray, gorilla, newt, termite, ladybird, vampire, carp, pike, pony, puma, duck, aardvark, catfish, wasp, squirrel, porpoise, fruitbat, cheetah, swan, clam, elephant, octopus, hawk, sparrow, bear, scorpion, housefly, girl, ostrich, goat, opossum, leopard, lobster, hamster, dolphin, lark, tuatara, lion, sealion, seal, pitviper, penguin, cavy, crab, antelope, piranha, kiwi, wallaby, flea, toad, seahorse, mongoose, crayfish, pussycat, dove, chicken, dogfish, starfish, flamingo, giraffe, calf, boar, vulture, platypus, honeybee, haddock, vole, herring, gull, lynx, gnat, seasnake, worm, bass, reindeer, slowworm, seawasp, wolf, rhea, sole, chub, tortoise, wren, oryx, mink, raccoon, hare, frog, mole, crow, slug, skimmer, moth, skua, deer, buffalo, polecat, parakeet, pheasant, tuna
 stingray -> fish is predicted
-lion -> mammal is predicted
-newt -> amphibian is predicted
-vampire -> mammal is predicted
-seasnake -> reptile is predicted
-porpoise -> mammal is predicted
-elephant -> mammal is predicted
-flamingo -> bird is predicted
 gorilla -> mammal is predicted
-mongoose -> mammal is predicted
-kiwi -> bird is predicted
-sole -> fish is predicted
-pony -> mammal is predicted
-squirrel -> mammal is predicted
+newt -> amphibian is predicted
+termite -> insect is predicted
+ladybird -> insect is predicted
+vampire -> mammal is predicted
 carp -> fish is predicted
 pike -> fish is predicted
-scorpion -> shellfish is predicted
-aardvark -> mammal is predicted
-tuatara -> reptile is predicted
-piranha -> fish is predicted
-penguin -> bird is predicted
-sparrow -> bird is predicted
-tortoise -> reptile is predicted
-platypus -> mammal is predicted
-cavy -> mammal is predicted
-leopard -> mammal is predicted
-octopus -> shellfish is predicted
-slug -> shellfish is predicted
-deer -> mammal is predicted
+pony -> mammal is predicted
+puma -> mammal is predicted
 duck -> bird is predicted
-hamster -> mammal is predicted
-gull -> bird is predicted
-seal -> mammal is predicted
-lobster -> shellfish is predicted
-dogfish -> fish is predicted
-toad -> amphibian is predicted
-wolf -> mammal is predicted
-antelope -> mammal is predicted
-seawasp -> shellfish is predicted
-skimmer -> bird is predicted
-pheasant -> bird is predicted
-chub -> fish is predicted
-swan -> bird is predicted
-seahorse -> fish is predicted
-goat -> mammal is predicted
-rhea -> mammal is predicted
-pussycat -> mammal is predicted
-pitviper -> reptile is predicted
-boar -> mammal is predicted
-tuna -> mammal is predicted
-vole -> mammal is predicted
-crow -> mammal is predicted
-starfish -> shellfish is predicted
-moth -> insect is predicted
-slowworm -> reptile is predicted
-clam -> shellfish is predicted
-girl -> mammal is predicted
-reindeer -> mammal is predicted
-bass -> fish is predicted
-termite -> insect is predicted
-crab -> mammal is predicted
-dove -> bird is predicted
-cheetah -> mammal is predicted
-frog -> amphibian is predicted
-buffalo -> mammal is predicted
-calf -> mammal is predicted
-giraffe -> mammal is predicted
-wallaby -> mammal is predicted
-skua -> bird is predicted
-fruitbat -> mammal is predicted
-mink -> mammal is predicted
-bear -> mammal is predicted
-wasp -> insect is predicted
-dolphin -> mammal is predicted
-mole -> mammal is predicted
-puma -> mammal is predicted
-hawk -> bird is predicted
-sealion -> mammal is predicted
-herring -> fish is predicted
+aardvark -> mammal is predicted
 catfish -> fish is predicted
-ladybird -> insect is predicted
-parakeet -> bird is predicted
-ostrich -> bird is predicted
-housefly -> insect is predicted
-polecat -> mammal is predicted
-lark -> bird is predicted
-hare -> mammal is predicted
-vulture -> bird is predicted
-opossum -> mammal is predicted
-oryx -> mammal is predicted
-chicken -> bird is predicted
-lynx -> mammal is predicted
-crayfish -> shellfish is predicted
-raccoon -> mammal is predicted
-flea -> insect is predicted
-wren -> mammal is predicted
-gnat -> insect is predicted
-honeybee -> insect is predicted
-worm -> shellfish is predicted
-
-Mean: 0.58, Standard Deviation: 0.12292725943057183, Tree: 
-
-animal_name Chi2=563.435 split (36,18,8,3,13,4,9) on values haddock, stingray, lion, newt, vampire, seasnake, porpoise, elephant, flamingo, gorilla, mongoose, kiwi, sole, pony, squirrel, carp, pike, scorpion, aardvark, tuatara, piranha, penguin, sparrow, tortoise, platypus, cavy, leopard, octopus, slug, deer, duck, hamster, gull, seal, lobster, dogfish, toad, wolf, antelope, seawasp, skimmer, pheasant, chub, swan, seahorse, goat, rhea, pussycat, pitviper, boar, tuna, vole, crow, starfish, moth, slowworm, clam, girl, reindeer, bass, termite, crab, dove, cheetah, frog, buffalo, calf, giraffe, wallaby, skua, fruitbat, mink, bear, wasp, dolphin, mole, puma, hawk, sealion, herring, catfish, ladybird, parakeet, ostrich, housefly, polecat, lark, hare, vulture, opossum, oryx, chicken, lynx, crayfish, raccoon, flea, wren, gnat, honeybee, worm
-haddock -> fish is predicted
-stingray -> fish is predicted
-lion -> mammal is predicted
-newt -> amphibian is predicted
-vampire -> mammal is predicted
-seasnake -> mammal is predicted
-porpoise -> mammal is predicted
-elephant -> mammal is predicted
-flamingo -> bird is predicted
-gorilla -> mammal is predicted
-mongoose -> mammal is predicted
-kiwi -> bird is predicted
-sole -> fish is predicted
-pony -> mammal is predicted
+wasp -> insect is predicted
 squirrel -> mammal is predicted
+porpoise -> mammal is predicted
+fruitbat -> mammal is predicted
+cheetah -> mammal is predicted
+swan -> mammal is predicted
+clam -> shellfish is predicted
+elephant -> mammal is predicted
+octopus -> shellfish is predicted
+hawk -> mammal is predicted
+sparrow -> bird is predicted
+bear -> mammal is predicted
+scorpion -> shellfish is predicted
+housefly -> insect is predicted
+girl -> mammal is predicted
+ostrich -> bird is predicted
+goat -> mammal is predicted
+opossum -> mammal is predicted
+leopard -> mammal is predicted
+lobster -> shellfish is predicted
+hamster -> mammal is predicted
+dolphin -> mammal is predicted
+lark -> bird is predicted
+tuatara -> reptile is predicted
+lion -> mammal is predicted
+sealion -> mammal is predicted
+seal -> mammal is predicted
+pitviper -> reptile is predicted
+penguin -> bird is predicted
+cavy -> mammal is predicted
+crab -> shellfish is predicted
+antelope -> mammal is predicted
+piranha -> fish is predicted
+kiwi -> bird is predicted
+wallaby -> mammal is predicted
+flea -> insect is predicted
+toad -> amphibian is predicted
+seahorse -> fish is predicted
+mongoose -> mammal is predicted
+crayfish -> shellfish is predicted
+pussycat -> mammal is predicted
+dove -> mammal is predicted
+chicken -> bird is predicted
+dogfish -> fish is predicted
+starfish -> shellfish is predicted
+flamingo -> bird is predicted
+giraffe -> mammal is predicted
+calf -> mammal is predicted
+boar -> mammal is predicted
+vulture -> bird is predicted
+platypus -> mammal is predicted
+honeybee -> mammal is predicted
+haddock -> fish is predicted
+vole -> mammal is predicted
+herring -> fish is predicted
+gull -> mammal is predicted
+lynx -> mammal is predicted
+gnat -> insect is predicted
+seasnake -> reptile is predicted
+worm -> shellfish is predicted
+bass -> fish is predicted
+reindeer -> mammal is predicted
+slowworm -> reptile is predicted
+seawasp -> shellfish is predicted
+wolf -> mammal is predicted
+rhea -> bird is predicted
+sole -> mammal is predicted
+chub -> fish is predicted
+tortoise -> reptile is predicted
+wren -> bird is predicted
+oryx -> mammal is predicted
+mink -> mammal is predicted
+raccoon -> mammal is predicted
+hare -> mammal is predicted
+frog -> amphibian is predicted
+mole -> mammal is predicted
+crow -> bird is predicted
+slug -> shellfish is predicted
+skimmer -> bird is predicted
+moth -> insect is predicted
+skua -> bird is predicted
+deer -> mammal is predicted
+buffalo -> mammal is predicted
+polecat -> mammal is predicted
+parakeet -> bird is predicted
+pheasant -> mammal is predicted
+tuna -> fish is predicted
+
+Mean: 0.57, Standard Deviation: 0.21628170930011112, Tree: 
+
+animal_name Chi2=570.236 split (9,5,17,13,38,5,4) on values stingray, gorilla, newt, termite, ladybird, vampire, carp, pike, pony, puma, duck, aardvark, catfish, wasp, squirrel, porpoise, fruitbat, cheetah, swan, clam, elephant, octopus, hawk, sparrow, bear, scorpion, housefly, girl, ostrich, goat, opossum, leopard, lobster, hamster, dolphin, lark, tuatara, lion, sealion, seal, pitviper, penguin, cavy, crab, antelope, piranha, kiwi, wallaby, flea, toad, seahorse, mongoose, crayfish, pussycat, dove, chicken, dogfish, starfish, flamingo, giraffe, calf, boar, vulture, platypus, honeybee, haddock, vole, herring, gull, lynx, gnat, seasnake, worm, bass, reindeer, slowworm, seawasp, wolf, rhea, sole, chub, tortoise, wren, oryx, mink, raccoon, hare, frog, mole, crow, slug, skimmer, moth, skua, deer, buffalo, polecat, parakeet, pheasant, tuna
+stingray -> fish is predicted
+gorilla -> mammal is predicted
+newt -> amphibian is predicted
+termite -> mammal is predicted
+ladybird -> insect is predicted
+vampire -> mammal is predicted
 carp -> fish is predicted
 pike -> fish is predicted
-scorpion -> mammal is predicted
-aardvark -> mammal is predicted
-tuatara -> mammal is predicted
-piranha -> fish is predicted
-penguin -> bird is predicted
-sparrow -> bird is predicted
-tortoise -> reptile is predicted
-platypus -> mammal is predicted
-cavy -> mammal is predicted
-leopard -> mammal is predicted
-octopus -> shellfish is predicted
-slug -> shellfish is predicted
-deer -> mammal is predicted
-duck -> mammal is predicted
-hamster -> mammal is predicted
-gull -> bird is predicted
-seal -> mammal is predicted
-lobster -> shellfish is predicted
-dogfish -> fish is predicted
-toad -> amphibian is predicted
-wolf -> mammal is predicted
-antelope -> mammal is predicted
-seawasp -> shellfish is predicted
-skimmer -> bird is predicted
-pheasant -> bird is predicted
-chub -> fish is predicted
-swan -> bird is predicted
-seahorse -> fish is predicted
-goat -> mammal is predicted
-rhea -> mammal is predicted
-pussycat -> mammal is predicted
-pitviper -> reptile is predicted
-boar -> mammal is predicted
-tuna -> fish is predicted
-vole -> mammal is predicted
-crow -> bird is predicted
-starfish -> shellfish is predicted
-moth -> insect is predicted
-slowworm -> reptile is predicted
-clam -> shellfish is predicted
-girl -> mammal is predicted
-reindeer -> mammal is predicted
-bass -> fish is predicted
-termite -> insect is predicted
-crab -> shellfish is predicted
-dove -> bird is predicted
-cheetah -> mammal is predicted
-frog -> amphibian is predicted
-buffalo -> mammal is predicted
-calf -> mammal is predicted
-giraffe -> mammal is predicted
-wallaby -> mammal is predicted
-skua -> bird is predicted
-fruitbat -> mammal is predicted
-mink -> mammal is predicted
-bear -> mammal is predicted
-wasp -> insect is predicted
-dolphin -> mammal is predicted
-mole -> mammal is predicted
+pony -> mammal is predicted
 puma -> mammal is predicted
-hawk -> bird is predicted
-sealion -> mammal is predicted
-herring -> fish is predicted
+duck -> bird is predicted
+aardvark -> mammal is predicted
 catfish -> fish is predicted
-ladybird -> insect is predicted
-parakeet -> bird is predicted
+wasp -> mammal is predicted
+squirrel -> mammal is predicted
+porpoise -> mammal is predicted
+fruitbat -> mammal is predicted
+cheetah -> mammal is predicted
+swan -> bird is predicted
+clam -> shellfish is predicted
+elephant -> mammal is predicted
+octopus -> shellfish is predicted
+hawk -> bird is predicted
+sparrow -> bird is predicted
+bear -> mammal is predicted
+scorpion -> shellfish is predicted
+housefly -> mammal is predicted
+girl -> mammal is predicted
 ostrich -> bird is predicted
-housefly -> insect is predicted
-polecat -> mammal is predicted
-lark -> bird is predicted
-hare -> mammal is predicted
-vulture -> bird is predicted
+goat -> mammal is predicted
 opossum -> mammal is predicted
-oryx -> mammal is predicted
-chicken -> bird is predicted
-lynx -> mammal is predicted
-crayfish -> shellfish is predicted
-raccoon -> mammal is predicted
+leopard -> mammal is predicted
+lobster -> shellfish is predicted
+hamster -> mammal is predicted
+dolphin -> mammal is predicted
+lark -> mammal is predicted
+tuatara -> reptile is predicted
+lion -> mammal is predicted
+sealion -> mammal is predicted
+seal -> mammal is predicted
+pitviper -> reptile is predicted
+penguin -> bird is predicted
+cavy -> mammal is predicted
+crab -> shellfish is predicted
+antelope -> mammal is predicted
+piranha -> fish is predicted
+kiwi -> bird is predicted
+wallaby -> mammal is predicted
 flea -> insect is predicted
-wren -> bird is predicted
-gnat -> insect is predicted
+toad -> amphibian is predicted
+seahorse -> fish is predicted
+mongoose -> mammal is predicted
+crayfish -> shellfish is predicted
+pussycat -> mammal is predicted
+dove -> bird is predicted
+chicken -> mammal is predicted
+dogfish -> fish is predicted
+starfish -> mammal is predicted
+flamingo -> bird is predicted
+giraffe -> mammal is predicted
+calf -> mammal is predicted
+boar -> mammal is predicted
+vulture -> bird is predicted
+platypus -> mammal is predicted
 honeybee -> insect is predicted
+haddock -> fish is predicted
+vole -> mammal is predicted
+herring -> fish is predicted
+gull -> bird is predicted
+lynx -> mammal is predicted
+gnat -> insect is predicted
+seasnake -> reptile is predicted
 worm -> shellfish is predicted
+bass -> fish is predicted
+reindeer -> mammal is predicted
+slowworm -> reptile is predicted
+seawasp -> shellfish is predicted
+wolf -> mammal is predicted
+rhea -> bird is predicted
+sole -> fish is predicted
+chub -> fish is predicted
+tortoise -> reptile is predicted
+wren -> bird is predicted
+oryx -> mammal is predicted
+mink -> mammal is predicted
+raccoon -> mammal is predicted
+hare -> mammal is predicted
+frog -> amphibian is predicted
+mole -> mammal is predicted
+crow -> bird is predicted
+slug -> shellfish is predicted
+skimmer -> bird is predicted
+moth -> insect is predicted
+skua -> bird is predicted
+deer -> mammal is predicted
+buffalo -> mammal is predicted
+polecat -> mammal is predicted
+parakeet -> mammal is predicted
+pheasant -> bird is predicted
+tuna -> fish is predicted
 

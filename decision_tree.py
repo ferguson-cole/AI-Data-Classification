@@ -344,6 +344,8 @@ class DecisionTreeLearner:
 
         # Compute the probability density function
         delta_ppf = scipy.stats.chi2.ppf(1 - p_value, self.dof)
+        print(delta_ppf/100)
+        print(p_value)
 
         chi2result = namedtuple('chi2result', ['value', 'similar'])
         return chi2result(delta, (delta_ppf < p_value))
