@@ -279,6 +279,7 @@ class DecisionTreeLearner:
         # Call recursive helper function
         self.__chi_annotate_aux(self.tree, p_value)
 
+
     def __chi_annotate_aux(self, branch, p_value):
         """chi_annotate(branch, p_value)
         Add the chi squared value to a DecisionFork.  This is only used
@@ -295,6 +296,7 @@ class DecisionTreeLearner:
             # Check its children
             for child in branch.branches.values():
                 self.__chi_annotate_aux(child, p_value)
+
 
     def chi2test(self, p_value, fork):
         """chi2test - Helper function for prune
@@ -325,18 +327,40 @@ class DecisionTreeLearner:
         delta = 0
         children = fork.branches.values()
 
+        # Handle parent calculations
+        if fork.parent is None:
+            p_dist = self.count_targets(self.dataset.examples)
+        else:
+            p_dist = fork.parent.distribution
+
+        p_dist_len = len(p_dist)
+
+        # Handle child calculations
         for child in children:
-            for case in child.distribution():
-                pass
-            (p_k - p_k_hat)**2 / p_k_hat
+            c_dist = child.distribution
+
+            # Calculation for variables needed to compute delta 
+            for i in range(p_dist_len):
+                p = p_dist[i]
+                p_k = c_dist[i]
+                n = 0
+                n_k = 0
+                for ii in range(len(p_dist)):
+                    if ii == i:
+                        continue
+                    n += p_dist[ii]
+                for ii in range(len(c_dist)):
+                    if ii == i:
+                        continue
+                    n_k += c_dist[ii]
+
+            p_k_hat = p * (p_k + n_k) / (p + n)
+            delta += (p_k - p_k_hat)**2 / p_k_hat
 
         # Compute the probability density function
         ppf = chi2.ppf(1 - p_value, self.dof)
-        print(delta)
-        print(chi2.cdf(delta, self.dof))
-        print(ppf)
-        print("-------")
 
+        # Handle output
         chi2result = namedtuple('chi2result', ['value', 'similar'])
         return chi2result(delta, (delta < ppf))
 
