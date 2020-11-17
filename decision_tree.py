@@ -4,6 +4,7 @@ from collections import namedtuple
 
 import numpy as np
 import scipy.stats
+from scipy.stats import chi2
 
 from ml_lib.ml_util import argmax_random_tie, normalize, remove_all, best_index, DataSet
 from ml_lib.decision_tree_support import DecisionLeaf, DecisionFork
@@ -322,31 +323,22 @@ class DecisionTreeLearner:
 
         # Setup delta
         delta = 0
+        children = fork.branches.values()
 
-        # Check to see if you are working with a parent
-        if fork.parent is None:
-            parent_distribution_split = self.count_targets(self.dataset.examples)
-        else:
-            parent_distribution_split = fork.parent.distribution
-
-        # Explore the children from the parent
-        for sub_child in fork.branches.values():
-            # Checks if the child is an instance of a DecisionFork or DecisionLeaf
-            if isinstance(sub_child, (DecisionFork, DecisionLeaf)):
-                child_distribution = sub_child.distribution
-
-                # Go through each class
-                for kth_instance in range(len(parent_distribution_split)):
-                    p_hat = np.multiply(parent_distribution_split[kth_instance], (np.sum(child_distribution))
-                                        / np.sum(parent_distribution_split))
-                    if p_hat != 0:
-                        delta += (np.square(child_distribution[kth_instance] - p_hat)) / p_hat
+        for child in children:
+            for case in child.distribution():
+                pass
+            (p_k - p_k_hat)**2 / p_k_hat
 
         # Compute the probability density function
-        delta_ppf = scipy.stats.chi2.ppf(1 - p_value, self.dof)
+        ppf = chi2.ppf(1 - p_value, self.dof)
+        print(delta)
+        print(chi2.cdf(delta, self.dof))
+        print(ppf)
+        print("-------")
 
         chi2result = namedtuple('chi2result', ['value', 'similar'])
-        return chi2result(delta, (delta_ppf < p_value))
+        return chi2result(delta, (delta < ppf))
 
     def __str__(self):
         """str - String representation of the tree"""
