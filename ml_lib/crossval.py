@@ -75,7 +75,7 @@ def cross_validation(learner, dataset, *learner_posn_args, k=10, trials=1,
             fold_err = err_ratio(h.predict, fold_data, val_data)
 
             # Prune the model, then see how well we do on validation data
-            p_value = .05
+            p_value = .025
             h.chi_annotate(p_value)
             h.prune(p_value)
             pruned_err = err_ratio(h.predict, fold_data, val_data)
