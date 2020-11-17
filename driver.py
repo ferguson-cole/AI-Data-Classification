@@ -24,7 +24,7 @@ def main():
     Runs cross validation on data sets and reports results/trees
     """
     init_file()
-    p_value = 0.05
+    p_value = 0.025
 
     set_names = ("mushrooms", "zoo")
     set_targets = (0, 17)
