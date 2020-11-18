@@ -324,44 +324,32 @@ class DecisionTreeLearner:
         # scipy.stats.chi2.ppf
 
         # Setup delta
-        delta = 0
-        p_k_hat = 0
+        delta = 0.0
         children = fork.branches.values()
 
         # Handle parent calculations
-        if fork.parent is None:
-            p_dist = self.count_targets(self.dataset.examples)
-        else:
-            p_dist = fork.parent.distribution
+        p_dist = fork.distribution
 
         p_dist_len = len(p_dist)
 
         # Handle child calculations
         for child in children:
+
+            # Double check that we can call distribution on our child obj
+            if not isinstance(child, (DecisionLeaf, DecisionFork)):
+                continue
+
             c_dist = child.distribution
 
-            # Calculation for variables needed to compute delta 
-            for i in range(p_dist_len):
-                p = p_dist[i]
-                p_k = c_dist[i]
-                n = -p_dist[i]
-                n_k = -c_dist[i]
+            for index in range(p_dist_len):
+                # Current value at index of child distribution
+                observed = c_dist[index]
+                # Current value at index of parent distribution
+                expected = p_dist[index]
 
-                for p_count in p_dist:
-                    n += p_count
+                if expected != 0:
+                    delta += ( (observed - expected)**2 ) / expected
 
-                for c_count in c_dist:
-                    n_k += c_count
-
-                p_k_hat = p * (p_k + n_k) / (p + n)
-                n_k_hat = n * (p_k + n_k) / (p + n)
-
-                if p_k_hat != 0:
-                    delta += ((p_k - p_k_hat)**2 / p_k_hat)
-
-        #     print("p_k -- " + str(p_k) + "  ||  p_k_hat -- " + str(p_k_hat) + "  ||  delta -- " + str(delta) + " || n -- " + str(n) + " || n_k -- " + str(n_k))
-        # print("done -- deltaresult -- " + str(delta))
-        print(delta)
         # Compute the probability density function
         ppf = chi2.ppf(1 - p_value, self.dof)
         # Handle output
