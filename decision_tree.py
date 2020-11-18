@@ -344,24 +344,24 @@ class DecisionTreeLearner:
             for i in range(p_dist_len):
                 p = p_dist[i]
                 p_k = c_dist[i]
-                n = 0
-                n_k = 0
-                for ii in range(len(p_dist)):
-                    if ii == i:
-                        continue
-                    n += p_dist[ii]
-                for ii in range(len(c_dist)):
-                    if ii == i:
-                        continue
-                    n_k += c_dist[ii]
+                n = -p_dist[i]
+                n_k = -c_dist[i]
+
+                for p_count in p_dist:
+                    n += p_count
+
+                for c_count in c_dist:
+                    n_k += c_count
 
                 p_k_hat = p * (p_k + n_k) / (p + n)
+                n_k_hat = n * (p_k + n_k) / (p + n)
 
-            if p_k_hat != 0:
-                delta += ((p_k - p_k_hat)**2 / p_k_hat)
-                print(delta)
-            print("p_k -- " + str(p_k) + "  ||  p_k_hat -- " + str(p_k_hat) + "  ||  delta -- " + str(delta) + " || n -- " + str(n) + " || n_k -- " + str(n_k))
-        print("done -- deltaresult -- " + str(delta))
+                if p_k_hat != 0:
+                    delta += ((p_k - p_k_hat)**2 / p_k_hat)
+
+        #     print("p_k -- " + str(p_k) + "  ||  p_k_hat -- " + str(p_k_hat) + "  ||  delta -- " + str(delta) + " || n -- " + str(n) + " || n_k -- " + str(n_k))
+        # print("done -- deltaresult -- " + str(delta))
+        print(delta)
         # Compute the probability density function
         ppf = chi2.ppf(1 - p_value, self.dof)
         # Handle output

@@ -28,6 +28,8 @@ def main():
 
     set_names = ("mushrooms", "zoo")
     set_targets = (0, 17)
+    # set_names = ("tiny_animal_set","tiny_animal_set")
+    # set_targets = (2,2)
     for i in range( len(set_names) ):
         # Construct a new DataSet and corresponding DecisionTreeLearner
         dataset = DataSet(name=set_names[i], target=set_targets[i], attr_names=True)
