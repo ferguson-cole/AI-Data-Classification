@@ -240,7 +240,6 @@ class DecisionTreeLearner:
         self.__prune_aux(self.tree, p_value)
 
     def __prune_aux(self, branch, p_value):
-        return
         if isinstance(branch, DecisionFork):
             # Check the children of the fork
             for children in branch.branches.values():
