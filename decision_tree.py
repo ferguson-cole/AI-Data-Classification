@@ -240,6 +240,7 @@ class DecisionTreeLearner:
         self.__prune_aux(self.tree, p_value)
 
     def __prune_aux(self, branch, p_value):
+        return
         if isinstance(branch, DecisionFork):
             # Check the children of the fork
             for children in branch.branches.values():
@@ -324,13 +325,11 @@ class DecisionTreeLearner:
         # scipy.stats.chi2.ppf
 
         # Setup delta
-        delta = 0.0
+        delta = 0
         children = fork.branches.values()
 
         # Handle parent calculations
         p_dist = fork.distribution
-
-        p_dist_len = len(p_dist)
 
         # Handle child calculations
         for child in children:
@@ -341,14 +340,14 @@ class DecisionTreeLearner:
 
             c_dist = child.distribution
 
-            for index in range(p_dist_len):
+            for index in range(len(p_dist)):
                 # Current value at index of child distribution
                 observed = c_dist[index]
                 # Current value at index of parent distribution
                 expected = p_dist[index]
 
                 if expected != 0:
-                    delta += ( (observed - expected)**2 ) / expected
+                    delta += (observed - expected)**2 / expected
 
         # Compute the probability density function
         ppf = chi2.ppf(1 - p_value, self.dof)
