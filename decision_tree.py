@@ -325,34 +325,34 @@ class DecisionTreeLearner:
 
         # Setup delta
         delta = 0
+
+        # handle the case where the parent could be none
+        if fork.parent is None:
+            parent_dist = self.count_targets(self.dataset.examples)
+        else:
+            parent_dist = fork.parent.distribution
+
+        # setup child
         children = fork.branches.values()
 
-        # Handle parent calculations
-        p_dist = fork.distribution
-
-        # Handle child calculations
+        # loop over the number of children.
         for child in children:
-
-            # Double check that we can call distribution on our child obj
-            if not isinstance(child, (DecisionLeaf, DecisionFork)):
-                continue
-
-            c_dist = child.distribution
-
-            for index in range(len(p_dist)):
-                # Current value at index of child distribution
-                observed = c_dist[index]
-                # Current value at index of parent distribution
-                expected = p_dist[index]
-
-                if expected != 0:
-                    delta += (observed - expected)**2 / expected
+            # get the distribution of each child
+            child_dist = child.distribution
+            for index in range(len(parent_dist)):
+                # Compute p hat - formula from slides
+                p_hat = fork.distribution[index] * (sum(child.distribution) / sum(fork.distribution))
+                if p_hat != 0:
+                    # sum up the delta value
+                    delta += ((child_dist[index] - p_hat) ** 2) / p_hat
 
         # Compute the probability density function
         ppf = chi2.ppf(1 - p_value, self.dof)
-        # Handle output
+
+        # setup expected output for chi2 
         chi2result = namedtuple('chi2result', ['value', 'similar'])
         return chi2result(delta, (delta < ppf))
+
 
     def __str__(self):
         """str - String representation of the tree"""
